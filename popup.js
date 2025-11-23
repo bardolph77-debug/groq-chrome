@@ -103,7 +103,14 @@ class QuickAI {
       }
 
       const data = await response.json();
-      const answer = data.choices[0].message.content;
+                  // Validate API response structure
+            if (!data || !data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+                throw new Error('Invalid API response structure');
+            }
+            if (!data.choices[0].message || !data.choices[0].message.content) {
+                throw new Error('Missing response content');
+            }
+            const answer = data.choices[0].message.content;
 
       // Show answer
       answerDiv.className = 'answer';
